@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    container_name: libray
+    volumes:
+      - .:/app
+      - ./prisma/data:/app/prisma/data
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "file:./prisma/data/dev.db"
+    command: >
+      sh -c "
+        npx prisma generate &&
+        npx prisma db push &&
+        npm start
+      "
