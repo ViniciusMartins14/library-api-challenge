@@ -21,11 +21,13 @@ Uma API RESTful para gerenciamento de livros e autores, construída com NestJS, 
 src/
 ├── modules/
 │   ├── books/
-│   └── authors/
+│   ├── authors/
+│   ├── health/
+│   └── metrics/
 ├── prisma/
-│   └── schema.prisma
-├── metrics/
-├── health/
+│   └── prisma.module.ts
+│   └── prisma.service.ts/
+├── app.module.ts
 └── main.ts
 ```
 
