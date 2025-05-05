@@ -17,6 +17,23 @@ export class BooksRepository {
         author: {
           connect: { id: data.author_id },
         },
+        bookInfo: data.book_info
+          ? {
+              create: {
+                publisher: data.book_info.publisher,
+                edition: data.book_info.edition,
+                pages: data.book_info.pages,
+                language: data.book_info.language,
+                publication_date: data.book_info.publication_date
+                  ? new Date(data.book_info.publication_date)
+                  : undefined,
+              },
+            }
+          : undefined,
+      },
+      include: {
+        author: true,
+        bookInfo: true,
       },
     });
   }
@@ -70,10 +87,42 @@ export class BooksRepository {
     });
   }
 
-  async updateBook(id: number, data: Omit<Prisma.bookUpdateInput, 'sbn'>) {
+  async updateBook(id: number, data: Prisma.bookUpdateInput) {
+    const { book_info, ...bookData } = data as any;
+
     return this.prisma.book.update({
       where: { id },
-      data,
+      data: {
+        ...bookData,
+        bookInfo: book_info
+          ? {
+              upsert: {
+                create: {
+                  publisher: book_info.publisher,
+                  edition: book_info.edition,
+                  pages: book_info.pages,
+                  language: book_info.language,
+                  publication_date: book_info.publication_date
+                    ? new Date(book_info.publication_date)
+                    : undefined,
+                },
+                update: {
+                  publisher: book_info.publisher,
+                  edition: book_info.edition,
+                  pages: book_info.pages,
+                  language: book_info.language,
+                  publication_date: book_info.publication_date
+                    ? new Date(book_info.publication_date)
+                    : undefined,
+                },
+              },
+            }
+          : undefined,
+      },
+      include: {
+        author: true,
+        bookInfo: true,
+      },
     });
   }
 

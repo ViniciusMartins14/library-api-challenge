@@ -7,17 +7,6 @@ describe('BooksRepository', () => {
   let repository: BooksRepository;
   let prisma: ReturnType<typeof prismaMockFactory>;
 
-  const mockPrisma = {
-    book: {
-      findMany: jest.fn(),
-      count: jest.fn(),
-      findUnique: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      create: jest.fn(),
-    },
-  } as unknown as jest.Mocked<PrismaService>;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -116,8 +105,12 @@ describe('BooksRepository', () => {
       expect(prisma.book.update).toHaveBeenCalledWith({
         where: { id: 1 },
         data: { name: 'Updated Book' },
+        include: {
+          author: true,
+          bookInfo: true,
+        },
       });
-      
+
       expect(result.name).toBe('Updated Book');
     });
   });
@@ -156,6 +149,11 @@ describe('BooksRepository', () => {
           author: {
             connect: { id: 1 },
           },
+          bookInfo: undefined,
+        },
+        include: {
+          author: true,
+          bookInfo: true,
         },
       });
 

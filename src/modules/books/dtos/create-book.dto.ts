@@ -5,7 +5,10 @@ import {
   IsInt,
   Min,
   IsOptional,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { BookInfoDto } from './book-info.dto';
 
 export class CreateBookDto {
   @IsString()
@@ -29,4 +32,9 @@ export class CreateBookDto {
 
   @IsInt()
   author_id: number;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => BookInfoDto)
+  book_info?: BookInfoDto;
 }

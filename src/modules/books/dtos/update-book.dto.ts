@@ -1,4 +1,6 @@
-import { IsOptional, IsString, IsInt, Min, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsOptional, IsString, IsInt, Min, MaxLength, ValidateNested } from 'class-validator';
+import { BookInfoDto } from './book-info.dto';
 
 export class UpdateBookDto {
   @IsOptional()
@@ -19,4 +21,9 @@ export class UpdateBookDto {
   @IsOptional()
   @IsInt()
   author_id?: number;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => BookInfoDto)
+  book_info?: BookInfoDto;
 }
