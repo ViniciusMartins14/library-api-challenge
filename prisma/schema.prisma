@@ -36,7 +36,7 @@ model book_info {
 
 model author {
   id         Int          @id @default(autoincrement())
-  name       String
+  name       String       @unique
   books      book[]
   authorInfo author_info?
 

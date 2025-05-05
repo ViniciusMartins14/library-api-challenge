@@ -1,4 +1,3 @@
-// src/books/books.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BooksRepository } from './books.repository';
 import { Prisma } from '@prisma/client';
